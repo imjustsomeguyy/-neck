@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Chinners Neck — Home of Fin</title>
+  <style>
+    /* CRAZY CHAOTIC STYLES */
+    :root{
+      --bg1:#ff00ff;--bg2:#00ffff;--bg3:#ffff00;--bg4:#00ff00;--bg5:#ff5500;
+    }
+    html,body{height:100%;margin:0;padding:0;overflow:hidden;font-family:verdana,system-ui,sans-serif}
+
+    /* animated rainbow background */
+    body{
+      background: linear-gradient(45deg,var(--bg1),var(--bg2),var(--bg3),var(--bg4),var(--bg5));
+      background-size:400% 400%;
+      animation:rainbowBG 8s linear infinite, pagePulse 4s ease-in-out infinite;
+      color:white;
+    }
+    @keyframes rainbowBG{
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+    }
+    @keyframes pagePulse{0%,100%{filter: hue-rotate(0deg)}50%{filter:hue-rotate(90deg) saturate(1.2)}}
+
+    /* central header */
+    header{position:fixed;left:50%;transform:translateX(-50%);top:2vh;text-align:center;z-index:50}
+    h1{font-size:4.2rem;margin:.1rem;padding:.2rem 1rem;border-radius:12px;background:rgba(0,0,0,0.25);text-shadow:0 0 12px #fff, 0 0 40px #000;animation:flashTitle 1s linear infinite}
+    @keyframes flashTitle{0%{text-shadow:0 0 6px #fff,0 0 22px #ff0}25%{text-shadow:0 0 20px #0ff,0 0 50px #0ff}50%{text-shadow:0 0 6px #fff,0 0 22px #f0f}75%{text-shadow:0 0 20px #ff0,0 0 50px #f0f}100%{text-shadow:0 0 6px #fff,0 0 22px #ff0}}
+
+    /* main feature image */
+    .feature{
+      position:fixed;left:50%;top:20vh;transform:translateX(-50%);z-index:40;display:flex;align-items:center;justify-content:center;flex-direction:column;
+    }
+    .feature img{width:min(55vw,520px);height:auto;border-radius:20px;border:8px solid rgba(255,255,255,0.2);box-shadow:0 0 40px rgba(255,255,255,0.25);animation:wiggle 6s ease-in-out infinite, glow 1.6s linear infinite}
+    @keyframes wiggle{0%{transform:translateX(-50%) rotate(-6deg)}25%{transform:translateX(-50%) rotate(6deg) scale(1.02)}50%{transform:translateX(-50%) rotate(-6deg)}75%{transform:translateX(-50%) rotate(6deg) scale(0.98)}100%{transform:translateX(-50%) rotate(-6deg)}}
+    @keyframes glow{0%{filter:drop-shadow(0 0 6px rgba(255,255,255,0.2))}50%{filter:drop-shadow(0 0 30px rgba(255,255,255,0.5))}100%{filter:drop-shadow(0 0 6px rgba(255,255,255,0.2))}}
+
+    /* flashing border */
+    .page-frame{position:fixed;inset:0;pointer-events:none;z-index:60;box-shadow:inset 0 0 0 6px rgba(255,255,255,0.03);}
+    .stripe{position:absolute;inset:0;border:12px solid transparent;border-image:linear-gradient(90deg,red,orange,yellow,green,cyan,blue,violet) 1;filter:blur(2px);mix-blend-mode:screen;animation:spinStripes 10s linear infinite;opacity:0.9}
+    @keyframes spinStripes{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+    /* container for falling bits */
+    #chaos{position:fixed;inset:0;pointer-events:none;z-index:30}
+
+    /* falling items */
+    .falling{position:absolute;will-change:transform,opacity;user-select:none}
+    .falling.text{font-weight:900;padding:4px 8px;border-radius:8px;font-size:18px;background:linear-gradient(90deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02));mix-blend-mode:screen}
+    .falling.img{width:80px;height:80px;border-radius:12px;object-fit:cover}
+
+    /* animations */
+    @keyframes fall{0%{transform:translateY(-20vh) rotate(0deg);opacity:1}90%{opacity:1}100%{transform:translateY(120vh) rotate(720deg);opacity:0}}
+
+    /* controls panel */
+    .controls{position:fixed;right:1rem;bottom:1rem;z-index:70;background:rgba(0,0,0,0.35);padding:10px;border-radius:10px;color:#fff;font-size:13px}
+    .btn{background:linear-gradient(90deg,#fff3,#fff1);padding:6px 8px;border-radius:6px;border:0;margin:4px;cursor:pointer;font-weight:700}
+
+    /* accessibility: reduce motion */
+    @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <div class="page-frame">
+    <div class="stripe"></div>
+  </div>
+
+  <header>
+    <h1 id="title">CHINNERS NECK — FIN IS HERE</h1>
+  </header>
+
+  <main class="feature">
+    <img id="mainChin" src="Chin.png" alt="Fin (Chin) — feature" onerror="this.style.opacity=0.4; this.nextElementSibling.style.display='block'">
+    <div id="noImg" style="display:none;color:black;background:white;padding:10px;border-radius:8px;margin-top:14px;">Upload Chin.png to this repo to replace this placeholder!</div>
+  </main>
+
+  <div id="chaos"></div>
+
+  <div class="controls">
+    <div style="margin-bottom:6px">CHAOS CONTROL</div>
+    <button class="btn" id="spawnText">Spawn Text</button>
+    <button class="btn" id="spawnImg">Spawn Chin</button>
+    <button class="btn" id="clear">Clear</button>
+  </div>
+
+  <script>
+    // GitHub Copilot Chat Assistant provided chaotic homepage
+    const phrases = [
+      'CHINNERS!', 'NECK ATTACK', 'FIN THE LEGEND', 'SPLASH', 'BEHOLD FIN', 'RAINBOW CHIN', 'CHAOS', 'GO LOUD', 'CHIN POWER', 'NOSE & NECK', 'FIN 4EVA'
+    ];
+    const chaos = document.getElementById('chaos');
+    const spawnTextBtn = document.getElementById('spawnText');
+    const spawnImgBtn = document.getElementById('spawnImg');
+    const clearBtn = document.getElementById('clear');
+
+    function rand(min,max){return Math.random()*(max-min)+min}
+
+    function createFallingText(){
+      const el = document.createElement('div');
+      el.className = 'falling text';
+      el.textContent = phrases[Math.floor(Math.random()*phrases.length)];
+      const size = Math.floor(rand(14,48));
+      el.style.fontSize = size+'px';
+      el.style.left = rand(0,100) + 'vw';
+      el.style.top = '-10vh';
+      el.style.color = `hsl(${Math.floor(rand(0,360))}deg 100% ${rand(45,80)}%)`;
+      el.style.opacity = rand(0.6,1);
+      const dur = rand(4,12);
+      el.style.animation = `fall ${dur}s linear forwards`;
+      el.style.transform = `rotate(${rand(-40,40)}deg)`;
+      // give a funky text shadow
+      el.style.textShadow = `0 0 ${rand(6,18)}px rgba(0,0,0,0.6), 0 0 ${rand(8,24)}px rgba(255,255,255,0.15)`;
+      chaos.appendChild(el);
+      setTimeout(()=>el.remove(), (dur+0.5)*1000);
+    }
+
+    function createFallingImg(){
+      const img = document.createElement('img');
+      img.className = 'falling img';
+      img.src = 'Chin.png';
+      img.alt = 'Chin';
+      img.style.left = rand(0,100) + 'vw';
+      img.style.top = '-12vh';
+      img.style.width = rand(40,140) + 'px';
+      img.style.opacity = rand(0.6,1);
+      const dur = rand(5,14);
+      img.style.animation = `fall ${dur}s linear forwards`;
+      img.style.transform = `rotate(${rand(-360,360)}deg)`;
+      img.style.filter = `saturate(${rand(0.7,2)}) hue-rotate(${rand(0,360)}deg) drop-shadow(0 6px 10px rgba(0,0,0,0.6))`;
+      chaos.appendChild(img);
+      setTimeout(()=>img.remove(), (dur+0.5)*1000);
+    }
+
+    // rapid automatic spawn for maximum chaos
+    let autoText = setInterval(createFallingText, 600);
+    let autoImg = setInterval(createFallingImg, 1400);
+
+    spawnTextBtn.addEventListener('click', ()=>{
+      for(let i=0;i<8;i++) setTimeout(createFallingText,i*60);
+    });
+    spawnImgBtn.addEventListener('click', ()=>{
+      for(let i=0;i<4;i++) setTimeout(createFallingImg,i*120);
+    });
+    clearBtn.addEventListener('click', ()=>{chaos.innerHTML=''});
+
+    // extra: falling rainbow letters that follow mouse!
+    document.addEventListener('mousemove',(e)=>{
+      if(Math.random()>0.92) {
+        const dot = document.createElement('div');
+        dot.className='falling text';
+        dot.textContent = phrases[Math.floor(Math.random()*phrases.length)].slice(0,6);
+        dot.style.left = (e.clientX + rand(-120,120))+'px';
+        dot.style.top = (e.clientY + rand(-80,80))+'px';
+        dot.style.fontSize = Math.max(12, Math.min(36, rand(12,40)))+'px';
+        dot.style.color = `hsl(${Math.floor(rand(0,360))}deg 100% ${rand(45,75)}%)`;
+        dot.style.animation = `fall ${rand(4,9)}s linear forwards`;
+        chaos.appendChild(dot);
+        setTimeout(()=>dot.remove(),9000);
+      }
+    });
+
+    // cheeky synth beep when clicking the main image (low-key)
+    document.getElementById('mainChin').addEventListener('click', ()=>{
+      try{
+        const ctx = new (window.AudioContext||window.webkitAudioContext)();
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type='sawtooth';o.frequency.setValueAtTime(220,ctx.currentTime);
+        g.gain.setValueAtTime(0.05,ctx.currentTime);
+        o.connect(g);g.connect(ctx.destination);o.start();
+        setTimeout(()=>{o.stop();ctx.close()},120);
+      }catch(e){/* ignore */}
+    });
+
+    // tiny accessibility hint if prefers-reduced-motion
+    if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      clearInterval(autoText);clearInterval(autoImg);
+    }
+
+    // friendly dev overlay in console
+    console.log('%cWelcome to Chinners Neck! — go wild, upload Chin.png to the repo to feature Fin.','background:linear-gradient(90deg,#ff0,#f0f);color:#000;padding:6px 10px;border-radius:6px;font-weight:700');
+  </script>
+</body>
+</html>
