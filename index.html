@@ -1,186 +1,287 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Chinners Neck — Home of Fin</title>
-  <style>
-    /* CRAZY CHAOTIC STYLES */
-    :root{
-      --bg1:#ff00ff;--bg2:#00ffff;--bg3:#ffff00;--bg4:#00ff00;--bg5:#ff5500;
-    }
-    html,body{height:100%;margin:0;padding:0;overflow:hidden;font-family:verdana,system-ui,sans-serif}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHINNERS NECK – FIN IS HERE</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+        }
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Arial Black', Impact, sans-serif;
+            background: linear-gradient(135deg, #00c6ff, #0072ff, #00ff87, #60efff, #ffe066);
+            background-size: 400% 400%;
+            animation: gradientShift 12s ease infinite;
+        }
 
-    /* animated rainbow background */
-    body{
-      background: linear-gradient(45deg,var(--bg1),var(--bg2),var(--bg3),var(--bg4),var(--bg5));
-      background-size:400% 400%;
-      animation:rainbowBG 8s linear infinite, pagePulse 4s ease-in-out infinite;
-      color:white;
-    }
-    @keyframes rainbowBG{
-      0%{background-position:0% 50%}
-      50%{background-position:100% 50%}
-      100%{background-position:0% 50%}
-    }
-    @keyframes pagePulse{0%,100%{filter: hue-rotate(0deg)}50%{filter:hue-rotate(90deg) saturate(1.2)}}
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
 
-    /* central header */
-    header{position:fixed;left:50%;transform:translateX(-50%);top:2vh;text-align:center;z-index:50}
-    h1{font-size:4.2rem;margin:.1rem;padding:.2rem 1rem;border-radius:12px;background:rgba(0,0,0,0.25);text-shadow:0 0 12px #fff, 0 0 40px #000;animation:flashTitle 1s linear infinite}
-    @keyframes flashTitle{0%{text-shadow:0 0 6px #fff,0 0 22px #ff0}25%{text-shadow:0 0 20px #0ff,0 0 50px #0ff}50%{text-shadow:0 0 6px #fff,0 0 22px #f0f}75%{text-shadow:0 0 20px #ff0,0 0 50px #f0f}100%{text-shadow:0 0 6px #fff,0 0 22px #ff0}}
+        /* Top Header Area */
+        .header-container {
+            position: absolute;
+            top: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            text-align: center;
+            width: 90%;
+            max-width: 850px;
+        }
 
-    /* main feature image */
-    .feature{
-      position:fixed;left:50%;top:20vh;transform:translateX(-50%);z-index:40;display:flex;align-items:center;justify-content:center;flex-direction:column;
-    }
-    .feature img{width:min(55vw,520px);height:auto;border-radius:20px;border:8px solid rgba(255,255,255,0.2);box-shadow:0 0 40px rgba(255,255,255,0.25);animation:wiggle 6s ease-in-out infinite, glow 1.6s linear infinite}
-    @keyframes wiggle{0%{transform:translateX(-50%) rotate(-6deg)}25%{transform:translateX(-50%) rotate(6deg) scale(1.02)}50%{transform:translateX(-50%) rotate(-6deg)}75%{transform:translateX(-50%) rotate(6deg) scale(0.98)}100%{transform:translateX(-50%) rotate(-6deg)}}
-    @keyframes glow{0%{filter:drop-shadow(0 0 6px rgba(255,255,255,0.2))}50%{filter:drop-shadow(0 0 30px rgba(255,255,255,0.5))}100%{filter:drop-shadow(0 0 6px rgba(255,255,255,0.2))}}
+        .main-title {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            padding: 20px 40px;
+            border-radius: 16px;
+            color: #ffffff;
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 255, 135, 0.6), 0 0 20px rgba(0, 198, 255, 0.6);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+            animation: pulseGlow 2.5s ease-in-out infinite alternate;
+        }
 
-    /* flashing border */
-    .page-frame{position:fixed;inset:0;pointer-events:none;z-index:60;box-shadow:inset 0 0 0 6px rgba(255,255,255,0.03);}
-    .stripe{position:absolute;inset:0;border:12px solid transparent;border-image:linear-gradient(90deg,red,orange,yellow,green,cyan,blue,violet) 1;filter:blur(2px);mix-blend-mode:screen;animation:spinStripes 10s linear infinite;opacity:0.9}
-    @keyframes spinStripes{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+        @keyframes pulseGlow {
+            0% { transform: scale(1); box-shadow: 0 8px 32px 0 rgba(0,0,0,0.2); }
+            100% { transform: scale(1.02); box-shadow: 0 8px 40px 5px rgba(0, 255, 135, 0.4); }
+        }
 
-    /* container for falling bits */
-    #chaos{position:fixed;inset:0;pointer-events:none;z-index:30}
+        .helper-msg {
+            margin-top: 15px;
+            display: inline-block;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-family: system-ui, sans-serif;
+            border: 1px dashed rgba(255,255,255,0.4);
+        }
 
-    /* falling items */
-    .falling{position:absolute;will-change:transform,opacity;user-select:none}
-    .falling.text{font-weight:900;padding:4px 8px;border-radius:8px;font-size:18px;background:linear-gradient(90deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02));mix-blend-mode:screen}
-    .falling.img{width:80px;height:80px;border-radius:12px;object-fit:cover}
+        /* Interactive Canvas */
+        #chaos-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
 
-    /* animations */
-    @keyframes fall{0%{transform:translateY(-20vh) rotate(0deg);opacity:1}90%{opacity:1}100%{transform:translateY(120vh) rotate(720deg);opacity:0}}
+        /* Fixed Control Panel */
+        .control-panel {
+            position: absolute;
+            bottom: 25px;
+            right: 25px;
+            z-index: 10;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-width: 190px;
+        }
 
-    /* controls panel */
-    .controls{position:fixed;right:1rem;bottom:1rem;z-index:70;background:rgba(0,0,0,0.35);padding:10px;border-radius:10px;color:#fff;font-size:13px}
-    .btn{background:linear-gradient(90deg,#fff3,#fff1);padding:6px 8px;border-radius:6px;border:0;margin:4px;cursor:pointer;font-weight:700}
+        .panel-title {
+            color: #5cc8ff;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            text-align: center;
+        }
 
-    /* accessibility: reduce motion */
-    @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
-  </style>
+        .btn {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.25);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        .btn-clear {
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+        }
+        
+        .btn-clear:hover {
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+        }
+    </style>
 </head>
 <body>
-  <div class="page-frame">
-    <div class="stripe"></div>
-  </div>
 
-  <header>
-    <h1 id="title">CHINNERS NECK — FIN IS HERE</h1>
-  </header>
+    <div class="header-container">
+        <div class="main-title">Chinners Neck – Fin Is Here</div>
+        <div class="helper-msg">Images will clip perfectly to circles automatically.</div>
+    </div>
 
-  <main class="feature">
-    <img id="mainChin" src="Chin.png" alt="Fin (Chin) — feature" onerror="this.style.opacity=0.4; this.nextElementSibling.style.display='block'">
-    <div id="noImg" style="display:none;color:black;background:white;padding:10px;border-radius:8px;margin-top:14px;">Upload Chin.png to this repo to replace this placeholder!</div>
-  </main>
+    <canvas id="chaos-canvas"></canvas>
 
-  <div id="chaos"></div>
+    <div class="control-panel">
+        <div class="panel-title">Chaos Control</div>
+        <button class="btn" id="spawn-text">Spawn Text</button>
+        <button class="btn" id="spawn-chin">Spawn Chin</button>
+        <button class="btn btn-clear" id="clear-all">Clear</button>
+    </div>
 
-  <div class="controls">
-    <div style="margin-bottom:6px">CHAOS CONTROL</div>
-    <button class="btn" id="spawnText">Spawn Text</button>
-    <button class="btn" id="spawnImg">Spawn Chin</button>
-    <button class="btn" id="clear">Clear</button>
-  </div>
+    <script>
+        const canvas = document.getElementById('chaos-canvas');
+        const ctx = canvas.getContext('2d');
 
-  <script>
-    // GitHub Copilot Chat Assistant provided chaotic homepage
-    const phrases = [
-      'CHINNERS!', 'NECK ATTACK', 'FIN THE LEGEND', 'SPLASH', 'BEHOLD FIN', 'RAINBOW CHIN', 'CHAOS', 'GO LOUD', 'CHIN POWER', 'NOSE & NECK', 'FIN 4EVA'
-    ];
-    const chaos = document.getElementById('chaos');
-    const spawnTextBtn = document.getElementById('spawnText');
-    const spawnImgBtn = document.getElementById('spawnImg');
-    const clearBtn = document.getElementById('clear');
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
-    function rand(min,max){return Math.random()*(max-min)+min}
+        // Target updated image resource asset filename
+        const chinImg = new Image();
+        chinImg.src = 'IMG_5759.png'; 
+        let imgLoaded = false;
+        chinImg.onload = () => { imgLoaded = true; };
 
-    function createFallingText(){
-      const el = document.createElement('div');
-      el.className = 'falling text';
-      el.textContent = phrases[Math.floor(Math.random()*phrases.length)];
-      const size = Math.floor(rand(14,48));
-      el.style.fontSize = size+'px';
-      el.style.left = rand(0,100) + 'vw';
-      el.style.top = '-10vh';
-      el.style.color = `hsl(${Math.floor(rand(0,360))}deg 100% ${rand(45,80)}%)`;
-      el.style.opacity = rand(0.6,1);
-      const dur = rand(4,12);
-      el.style.animation = `fall ${dur}s linear forwards`;
-      el.style.transform = `rotate(${rand(-40,40)}deg)`;
-      // give a funky text shadow
-      el.style.textShadow = `0 0 ${rand(6,18)}px rgba(0,0,0,0.6), 0 0 ${rand(8,24)}px rgba(255,255,255,0.15)`;
-      chaos.appendChild(el);
-      setTimeout(()=>el.remove(), (dur+0.5)*1000);
-    }
+        // Fallback display if file asset is still loading
+        function drawFallbackChin(ctx, x, y, radius) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, Math.PI * 2);
+            ctx.clip();
+            
+            let grad = ctx.createRadialGradient(x, y, radius * 0.1, x, y, radius);
+            grad.addColorStop(0, '#ff9a9e');
+            grad.addColorStop(1, '#fecfef');
+            ctx.fillStyle = grad;
+            ctx.fill();
 
-    function createFallingImg(){
-      const img = document.createElement('img');
-      img.className = 'falling img';
-      img.src = 'Chin.png';
-      img.alt = 'Chin';
-      img.style.left = rand(0,100) + 'vw';
-      img.style.top = '-12vh';
-      img.style.width = rand(40,140) + 'px';
-      img.style.opacity = rand(0.6,1);
-      const dur = rand(5,14);
-      img.style.animation = `fall ${dur}s linear forwards`;
-      img.style.transform = `rotate(${rand(-360,360)}deg)`;
-      img.style.filter = `saturate(${rand(0.7,2)}) hue-rotate(${rand(0,360)}deg) drop-shadow(0 6px 10px rgba(0,0,0,0.6))`;
-      chaos.appendChild(img);
-      setTimeout(()=>img.remove(), (dur+0.5)*1000);
-    }
+            ctx.fillStyle = '#333';
+            ctx.font = `bold ${radius * 0.4}px sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText("CHIN", x, y);
+            
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 4;
+            ctx.stroke();
+            ctx.restore();
+        }
 
-    // rapid automatic spawn for maximum chaos
-    let autoText = setInterval(createFallingText, 600);
-    let autoImg = setInterval(createFallingImg, 1400);
+        const items = [];
+        const wordsPool = ["RAINBOW CHIN", "SPLASH", "BEHOLD", "CHINNERS!", "NECK ATTACK", "GO LOU", "CHAOS"];
+        const colorPool = ["#FF5733", "#33FF57", "#3357FF", "#F3FF33", "#FF33F3", "#33FFF0", "#FFFFFF"];
 
-    spawnTextBtn.addEventListener('click', ()=>{
-      for(let i=0;i<8;i++) setTimeout(createFallingText,i*60);
-    });
-    spawnImgBtn.addEventListener('click', ()=>{
-      for(let i=0;i<4;i++) setTimeout(createFallingImg,i*120);
-    });
-    clearBtn.addEventListener('click', ()=>{chaos.innerHTML=''});
+        class ChaosItem {
+            constructor(type) {
+                this.type = type; 
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 6;
+                this.vy = (Math.random() - 0.5) * 6;
+                this.angle = Math.random() * Math.PI * 2;
+                this.va = (Math.random() - 0.5) * 0.08; 
+                this.radius = Math.floor(Math.random() * 40) + 35;
+                
+                if (type === 'text') {
+                    this.text = wordsPool[Math.floor(Math.random() * wordsPool.length)];
+                    this.color = colorPool[Math.floor(Math.random() * colorPool.length)];
+                    this.fontSize = Math.floor(Math.random() * 20) + 24;
+                }
+            }
 
-    // extra: falling rainbow letters that follow mouse!
-    document.addEventListener('mousemove',(e)=>{
-      if(Math.random()>0.92) {
-        const dot = document.createElement('div');
-        dot.className='falling text';
-        dot.textContent = phrases[Math.floor(Math.random()*phrases.length)].slice(0,6);
-        dot.style.left = (e.clientX + rand(-120,120))+'px';
-        dot.style.top = (e.clientY + rand(-80,80))+'px';
-        dot.style.fontSize = Math.max(12, Math.min(36, rand(12,40)))+'px';
-        dot.style.color = `hsl(${Math.floor(rand(0,360))}deg 100% ${rand(45,75)}%)`;
-        dot.style.animation = `fall ${rand(4,9)}s linear forwards`;
-        chaos.appendChild(dot);
-        setTimeout(()=>dot.remove(),9000);
-      }
-    });
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.angle += this.va;
 
-    // cheeky synth beep when clicking the main image (low-key)
-    document.getElementById('mainChin').addEventListener('click', ()=>{
-      try{
-        const ctx = new (window.AudioContext||window.webkitAudioContext)();
-        const o = ctx.createOscillator();
-        const g = ctx.createGain();
-        o.type='sawtooth';o.frequency.setValueAtTime(220,ctx.currentTime);
-        g.gain.setValueAtTime(0.05,ctx.currentTime);
-        o.connect(g);g.connect(ctx.destination);o.start();
-        setTimeout(()=>{o.stop();ctx.close()},120);
-      }catch(e){/* ignore */}
-    });
+                if (this.x - this.radius < 0 || this.x + this.radius > canvas.width) this.vx *= -1;
+                if (this.y - this.radius < 0 || this.y + this.radius > canvas.height) this.vy *= -1;
+            }
 
-    // tiny accessibility hint if prefers-reduced-motion
-    if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-      clearInterval(autoText);clearInterval(autoImg);
-    }
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.angle);
 
-    // friendly dev overlay in console
-    console.log('%cWelcome to Chinners Neck! — go wild, upload Chin.png to the repo to feature Fin.','background:linear-gradient(90deg,#ff0,#f0f);color:#000;padding:6px 10px;border-radius:6px;font-weight:700');
-  </script>
-</body>
-</html>
+                if (this.type === 'text') {
+                    ctx.font = `bold ${this.fontSize}px 'Arial Black', Impact, sans-serif`;
+                    ctx.fillStyle = this.color;
+                    ctx.shadowColor = 'rgba(0,0,0,0.4)';
+                    ctx.shadowBlur = 6;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(this.text, 0, 0);
+                } else {
+                    if (imgLoaded) {
+                        ctx.beginPath();
+                        ctx.arc(0, 0, this.radius, 0, Math.PI * 2);
+                        ctx.closePath();
+                        ctx.clip();
+                        ctx.drawImage(chinImg, -this.radius, -this.radius, this.radius * 2, this.radius * 2);
+                        
+                        ctx.restore();
+                        ctx.save();
+                        ctx.translate(this.x, this.y);
+                        ctx.beginPath();
+                        ctx.arc(0, 0, this.radius, 0, Math.PI * 2);
+                        ctx.strokeStyle = 'rgba(255,255,255,0.85)';
+                        ctx.lineWidth = 4;
+                        ctx.stroke();
+                    } else {
+                        drawFallbackChin(ctx, 0, 0, this.radius);
+                    }
+                }
+                ctx.restore();
+            }
+        }
+
+        // Structural visual accent lines matching original site orientation
+        const bgLines = [
+            {x1: 0.15, y1: 0, x2: 0.45, y2: 1, color: 'rgba(255,215,0,0.35)', width: 6},
+            {x1: 0.75, y1: 0, x2: 0.95, y2: 1, color: 'rgba(20,50,220,0.25)', width: 8},
+            {x1: 0.90, y1: 0, x2: 0.65, y2: 1, color: 'rgba(0,255,100,0.2)', width: 4}
+        ];
+
+        function drawBackgroundLines() {
+            bgLines.forEach(line => {
+                ctx.beginPath();
+                ctx.moveTo(line.x1 * canvas.width, line.y1 * canvas.height);
+                ctx.lineTo(line.x2 * canvas.width, line.y2 * canvas.height);
+                ctx.strokeStyle = line.color;
+                ctx.lineWidth = line.width;
+                ctx.stroke();
+            });
+        }
+
