@@ -1,0 +1,38 @@
+<!--
+  Cookie Clicker loader (original source: https://github.com/OjiTheChamp/cookie-clicker)
+  Modified: replaces the big cookie SVG with Chin.png so the cookie becomes Fin.
+  Add Chin.png to the repo root to show Fin as the cookie.
+-->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Cookie Clicker — Chin Edition</title>
+  <style>html,body{height:100%;margin:0}body{display:flex;align-items:center;justify-content:center;background:#111;color:#fff;font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial}</style>
+</head>
+<body>
+  <div id="status">Loading Cookie Clicker…</div>
+  <script>
+    (async function(){
+      const src = 'https://raw.githubusercontent.com/OjiTheChamp/cookie-clicker/main/index.html';
+      try{
+        const res = await fetch(src);
+        if(!res.ok) throw new Error('Failed to fetch source: '+res.status);
+        let html = await res.text();
+        // Replace the cookie SVG with an <img src="Chin.png" /> so it uses the repo's Chin.png
+        html = html.replace(/<svg[^>]*class=["']cookie-svg["'][\s\S]*?<\/svg>/i, '<img class="cookie-svg" src="Chin.png" alt="Chin Cookie" />');
+        // Also replace golden cookie emoji text so it's more obvious with Chin
+        html = html.replace(/✨🍪✨/g, '✨🐶✨');
+        // Write the modified HTML into this document
+        document.open();
+        document.write(html);
+        document.close();
+      }catch(e){
+        document.getElementById('status').textContent = 'Failed to load Cookie Clicker: '+e;
+        console.error(e);
+      }
+    })();
+  </script>
+</body>
+</html>
