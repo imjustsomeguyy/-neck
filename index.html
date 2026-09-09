@@ -1,295 +1,1700 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CHINNERS</title>
-<meta name="description" content="The official unofficial Finley Crosby experience.">
-<meta name="theme-color" content="#00bfae">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍪</text></svg>">
-<style>
-  * { box-sizing: border-box; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  html, body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    font-family: Arial, Helvetica, sans-serif;
-  }
+  <title>CHINNERS</title>
 
-  body {
-    background: linear-gradient(135deg, #00bfae, #00e5ff, #006eff, #00ff66, #00d9c8);
-    background-size: 500% 500%;
-    animation: gradient 12s ease infinite;
-  }
+  <meta
+    name="description"
+    content="The official unofficial Finley Crosby experience."
+  >
+  <meta name="theme-color" content="#00bfae">
 
-  @keyframes gradient {
-    0%   { background-position: 0% 50%; }
-    25%  { background-position: 100% 25%; }
-    50%  { background-position: 100% 100%; }
-    75%  { background-position: 0% 75%; }
-    100% { background-position: 0% 50%; }
-  }
+  <link
+    rel="icon"
+    href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🍪</text></svg>'
+  >
 
-  #canvas {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    display: block;
-  }
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-  .menu {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-    padding: 20px;
-  }
+    :root {
+      --cyan: #00fff0;
+      --blue: #0077ff;
+      --green: #00ff88;
+      --pink: #ff3cf7;
+      --white: #ffffff;
+    }
 
-  .panel {
-    pointer-events: auto;
-    width: min(520px, calc(100vw - 40px));
-    padding: 42px;
-    text-align: center;
-    background: rgba(255, 255, 255, 0.16);
-    border: 1px solid rgba(255, 255, 255, 0.45);
-    border-radius: 30px;
-    backdrop-filter: blur(22px);
-    -webkit-backdrop-filter: blur(22px);
-    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.35);
-  }
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #041316;
+    }
 
-  h1 {
-    margin: 0;
-    color: white;
-    font-size: clamp(48px, 10vw, 92px);
-    font-weight: 1000;
-    letter-spacing: -5px;
-    text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.18), 0 10px 30px rgba(0, 0, 0, 0.2);
-  }
+    body {
+      position: relative;
+      isolation: isolate;
+      background:
+        radial-gradient(circle at 15% 15%, rgba(0, 255, 240, 0.28), transparent 28%),
+        radial-gradient(circle at 85% 20%, rgba(0, 119, 255, 0.28), transparent 30%),
+        radial-gradient(circle at 50% 90%, rgba(0, 255, 136, 0.2), transparent 35%),
+        linear-gradient(
+          135deg,
+          #00bfae,
+          #00e5ff,
+          #006eff,
+          #00ff66,
+          #00d9c8,
+          #006eff
+        );
+      background-size: 500% 500%;
+      animation: gradient 12s ease infinite;
+    }
 
-  .subtitle {
-    margin: 8px 0 32px;
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 16px;
-    font-weight: 800;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-  }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: -20%;
+      pointer-events: none;
+      z-index: 1;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          rgba(255,255,255,0.025) 0px,
+          rgba(255,255,255,0.025) 1px,
+          transparent 1px,
+          transparent 5px
+        );
+      mix-blend-mode: overlay;
+      opacity: 0.5;
+    }
 
-  .buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 20;
+      background: radial-gradient(
+        ellipse at center,
+        transparent 40%,
+        rgba(0, 0, 0, 0.2) 100%
+      );
+    }
 
-  .button {
-    display: block;
-    padding: 18px 24px;
-    border-radius: 16px;
-    color: white;
-    text-decoration: none;
-    font-size: 21px;
-    font-weight: 1000;
-    letter-spacing: 1px;
-    background: rgba(255, 255, 255, 0.18);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
-  }
+    @keyframes gradient {
+      0% {
+        background-position: 0% 50%;
+      }
+      25% {
+        background-position: 100% 25%;
+      }
+      50% {
+        background-position: 100% 100%;
+      }
+      75% {
+        background-position: 0% 75%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
 
-  .button:hover {
-    transform: scale(1.04) rotate(-1deg);
-    background: rgba(255, 255, 255, 0.3);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-  }
+    #canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      z-index: 2;
+    }
 
-  .button:active { transform: scale(0.97); }
+    #flash {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 30;
+      background: white;
+      opacity: 0;
+      mix-blend-mode: screen;
+    }
 
-  .cookie::before { content: "🍪 "; }
+    #flash.active {
+      animation: flash 0.18s ease-out;
+    }
 
-  .footer {
-    margin-top: 25px;
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
+    @keyframes flash {
+      0% {
+        opacity: 0.95;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
 
-  @media (prefers-reduced-motion: reduce) {
-    body { animation: none; }
-  }
-</style>
+    #shakeLayer {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .menu {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 11;
+      pointer-events: none;
+    }
+
+    .panel {
+      position: relative;
+      width: min(600px, calc(100vw - 40px));
+      padding: 42px;
+      text-align: center;
+      pointer-events: auto;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(255,255,255,0.19),
+          rgba(255,255,255,0.08)
+        );
+
+      border: 1px solid rgba(255,255,255,0.52);
+      border-radius: 34px;
+
+      backdrop-filter: blur(26px) saturate(160%);
+      -webkit-backdrop-filter: blur(26px) saturate(160%);
+
+      box-shadow:
+        0 35px 100px rgba(0,0,0,0.28),
+        inset 0 1px 0 rgba(255,255,255,0.4),
+        0 0 50px rgba(0,255,240,0.12);
+
+      overflow: hidden;
+    }
+
+    .panel::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: inherit;
+      pointer-events: none;
+
+      background:
+        conic-gradient(
+          from 0deg,
+          transparent 0deg,
+          rgba(255,255,255,0.3) 40deg,
+          transparent 90deg,
+          rgba(0,255,240,0.35) 180deg,
+          transparent 230deg,
+          rgba(255,0,255,0.25) 300deg,
+          transparent 340deg
+        );
+
+      animation: panelSpin 8s linear infinite;
+      opacity: 0.7;
+    }
+
+    .panel::after {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      left: -60px;
+      top: -60px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.14);
+      filter: blur(30px);
+      pointer-events: none;
+    }
+
+    @keyframes panelSpin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .panelContent {
+      position: relative;
+      z-index: 1;
+    }
+
+    h1 {
+      margin: 0;
+
+      color: white;
+      font-size: clamp(52px, 10vw, 102px);
+      font-weight: 1000;
+      letter-spacing: -7px;
+      line-height: 0.9;
+
+      text-shadow:
+        4px 4px 0 rgba(0,0,0,0.18),
+        0 10px 30px rgba(0,0,0,0.2),
+        0 0 25px rgba(255,255,255,0.2);
+
+      animation: titleFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes titleFloat {
+      0%, 100% {
+        transform: translateY(0) rotate(-0.4deg);
+      }
+      50% {
+        transform: translateY(-5px) rotate(0.4deg);
+      }
+    }
+
+    .subtitle {
+      margin: 13px 0 34px;
+
+      color: rgba(255,255,255,0.92);
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+
+      text-shadow: 0 3px 15px rgba(0,0,0,0.25);
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .button {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 68px;
+
+      padding: 18px 24px;
+      border-radius: 18px;
+
+      color: white;
+      text-decoration: none;
+
+      font-size: 21px;
+      font-weight: 1000;
+      letter-spacing: 1px;
+
+      overflow: hidden;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(255,255,255,0.2),
+          rgba(255,255,255,0.09)
+        );
+
+      border: 1px solid rgba(255,255,255,0.55);
+
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.28),
+        0 10px 25px rgba(0,0,0,0.12);
+
+      cursor: pointer;
+
+      transition:
+        transform 0.16s ease,
+        background 0.16s ease,
+        box-shadow 0.16s ease,
+        filter 0.16s ease;
+    }
+
+    .button::before {
+      content: "";
+      position: absolute;
+      top: -80%;
+      left: -35%;
+      width: 30%;
+      height: 260%;
+      transform: rotate(25deg);
+
+      background: rgba(255,255,255,0.28);
+      filter: blur(10px);
+
+      transition: left 0.5s ease;
+    }
+
+    .button:hover::before {
+      left: 120%;
+    }
+
+    .button:hover {
+      transform: scale(1.045) rotate(-0.8deg) translateY(-2px);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(255,255,255,0.31),
+          rgba(255,255,255,0.14)
+        );
+
+      box-shadow:
+        0 18px 45px rgba(0,0,0,0.2),
+        0 0 28px rgba(0,255,240,0.16),
+        inset 0 1px 0 rgba(255,255,255,0.35);
+
+      filter: brightness(1.08);
+    }
+
+    .button:active {
+      transform: scale(0.96);
+    }
+
+    .chaosButton {
+      background:
+        linear-gradient(
+          135deg,
+          rgba(255,0,180,0.18),
+          rgba(0,255,240,0.18)
+        );
+    }
+
+    .chaosButton:hover {
+      box-shadow:
+        0 18px 45px rgba(0,0,0,0.2),
+        0 0 40px rgba(255,0,200,0.26),
+        0 0 70px rgba(0,255,240,0.17);
+    }
+
+    .cookie::before {
+      content: "🍪 ";
+    }
+
+    .footer {
+      position: relative;
+      z-index: 1;
+
+      margin-top: 25px;
+
+      color: rgba(255,255,255,0.7);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* =========================================================
+       CHAOS MODE
+    ========================================================= */
+
+    #chaosOverlay {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    #chaosOverlay.active {
+      opacity: 1;
+    }
+
+    .chaosText {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+
+      transform: translate(-50%, -50%) scale(0.2);
+
+      color: white;
+      font-size: clamp(42px, 8vw, 110px);
+      font-weight: 1000;
+      letter-spacing: -5px;
+      white-space: nowrap;
+
+      text-shadow:
+        5px 5px 0 #000,
+        0 0 20px #00fff0,
+        0 0 50px #ff00e6,
+        0 0 90px #00fff0;
+
+      opacity: 0;
+    }
+
+    #chaosOverlay.active .chaosText {
+      animation: chaosTitle 0.75s cubic-bezier(.17,.89,.32,1.4);
+    }
+
+    @keyframes chaosTitle {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.05) rotate(-20deg);
+      }
+
+      20% {
+        opacity: 1;
+      }
+
+      55% {
+        transform: translate(-50%, -50%) scale(1.15) rotate(5deg);
+      }
+
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.7) rotate(-4deg);
+      }
+    }
+
+    .shockwave {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+
+      transform: translate(-50%, -50%) scale(0);
+
+      border: 12px solid rgba(255,255,255,0.9);
+      box-shadow:
+        0 0 20px rgba(0,255,240,0.8),
+        0 0 50px rgba(255,0,220,0.7),
+        inset 0 0 20px rgba(255,255,255,0.7);
+
+      opacity: 0;
+    }
+
+    .shockwave.active {
+      animation: shockwave 1.15s cubic-bezier(.1,.7,.2,1) forwards;
+    }
+
+    @keyframes shockwave {
+      0% {
+        opacity: 0.95;
+        transform: translate(-50%, -50%) scale(0.1);
+      }
+
+      65% {
+        opacity: 0.5;
+      }
+
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(25);
+      }
+    }
+
+    .megaRing {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+
+      width: 10px;
+      height: 10px;
+
+      border-radius: 50%;
+
+      border: 3px solid white;
+      box-shadow:
+        0 0 20px #00fff0,
+        0 0 50px #00fff0,
+        0 0 90px #ff00e6;
+
+      transform: translate(-50%, -50%);
+      opacity: 0;
+    }
+
+    .megaRing.active {
+      animation: megaRing 0.9s ease-out forwards;
+    }
+
+    @keyframes megaRing {
+      0% {
+        opacity: 1;
+        width: 10px;
+        height: 10px;
+      }
+
+      100% {
+        opacity: 0;
+        width: 180vw;
+        height: 180vw;
+      }
+    }
+
+    .debris {
+      position: fixed;
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      pointer-events: none;
+
+      background: white;
+      box-shadow:
+        0 0 12px #00fff0,
+        0 0 25px rgba(255,255,255,0.8);
+    }
+
+    .explodeImage {
+      position: fixed;
+
+      width: 90px;
+      height: 90px;
+
+      object-fit: cover;
+      border-radius: 50%;
+
+      border: 5px solid rgba(255,255,255,0.9);
+
+      box-shadow:
+        0 0 20px rgba(0,255,240,0.85),
+        0 0 50px rgba(255,0,200,0.55),
+        0 0 80px rgba(255,255,255,0.25);
+
+      pointer-events: none;
+      z-index: 55;
+    }
+
+    /* =========================================================
+       COOKIE CLICKER WINDOW
+    ========================================================= */
+
+    #cookieModal {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 18px;
+
+      background: rgba(0,0,0,0.58);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+
+      opacity: 0;
+      visibility: hidden;
+
+      transition:
+        opacity 0.25s ease,
+        visibility 0.25s ease;
+    }
+
+    #cookieModal.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .iframeWindow {
+      width: min(1400px, 96vw);
+      height: min(900px, 94vh);
+
+      background: rgba(15,20,24,0.88);
+
+      border: 1px solid rgba(255,255,255,0.28);
+      border-radius: 26px;
+
+      overflow: hidden;
+
+      box-shadow:
+        0 35px 120px rgba(0,0,0,0.55),
+        0 0 60px rgba(0,255,240,0.08);
+
+      transform: scale(0.92) translateY(20px);
+      transition: transform 0.3s cubic-bezier(.2,.8,.2,1);
+
+      display: flex;
+      flex-direction: column;
+    }
+
+    #cookieModal.open .iframeWindow {
+      transform: scale(1) translateY(0);
+    }
+
+    .iframeTopBar {
+      flex: 0 0 auto;
+
+      height: 58px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 0 15px 0 18px;
+
+      background:
+        linear-gradient(
+          180deg,
+          rgba(255,255,255,0.12),
+          rgba(255,255,255,0.06)
+        );
+
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .iframeTitle {
+      color: white;
+      font-weight: 1000;
+      letter-spacing: 1px;
+      font-size: 14px;
+    }
+
+    .closeButton {
+      width: 38px;
+      height: 38px;
+
+      border-radius: 50%;
+
+      border: 1px solid rgba(255,255,255,0.25);
+
+      background: rgba(255,255,255,0.1);
+
+      color: white;
+
+      font-size: 20px;
+      font-weight: 900;
+
+      cursor: pointer;
+
+      transition:
+        transform 0.15s ease,
+        background 0.15s ease;
+    }
+
+    .closeButton:hover {
+      transform: rotate(90deg) scale(1.08);
+      background: rgba(255,70,100,0.35);
+    }
+
+    #cookieFrame {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #111;
+      flex: 1 1 auto;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 700px) {
+      .panel {
+        padding: 30px 22px;
+        border-radius: 26px;
+      }
+
+      .subtitle {
+        font-size: 11px;
+        letter-spacing: 2px;
+      }
+
+      .button {
+        min-height: 60px;
+        font-size: 18px;
+      }
+
+      .iframeWindow {
+        width: 100%;
+        height: 100%;
+        border-radius: 18px;
+      }
+
+      .iframeTopBar {
+        height: 52px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      body,
+      h1,
+      .panel::before {
+        animation: none !important;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<canvas id="canvas" aria-hidden="true"></canvas>
+  <div id="shakeLayer">
+    <canvas id="canvas" aria-hidden="true"></canvas>
 
-<div class="menu">
-  <main class="panel">
-    <h1>CHINNERS</h1>
-    <div class="subtitle">The official unofficial Finley Crosby experience</div>
-    <div class="buttons">
-      <a class="button" href="/">CHINNERS CHAOS</a>
-      <a class="button cookie" href="/cookie-clicker.html">COOKIE CLICKER</a>
+    <div class="menu">
+      <main class="panel">
+        <div class="panelContent">
+
+          <h1>CHINNERS</h1>
+
+          <div class="subtitle">
+            The official unofficial Finley Crosby experience
+          </div>
+
+          <div class="buttons">
+
+            <a
+              class="button chaosButton"
+              href="#"
+              id="chaosButton"
+            >
+              CHINNERS CHAOS
+            </a>
+
+            <a
+              class="button cookie"
+              href="#"
+              id="cookieButton"
+            >
+              COOKIE CLICKER
+            </a>
+
+          </div>
+
+          <div class="footer">
+            Beware the chin
+          </div>
+
+        </div>
+      </main>
     </div>
-    <div class="footer">Beware the chin</div>
-  </main>
-</div>
+  </div>
 
-<script>
-(function () {
-  "use strict";
+  <div id="flash"></div>
 
-  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var canvas = document.getElementById("canvas");
-  var ctx = canvas.getContext("2d");
+  <div id="chaosOverlay">
+    <div class="chaosText">CHINNERS CHAOS</div>
+    <div class="shockwave"></div>
+    <div class="megaRing"></div>
+  </div>
 
-  var width = 0, height = 0, dpr = 1;
-  var objects = [];
+  <div id="cookieModal">
+    <div class="iframeWindow">
 
-  var textPool = [
-    "CHIN", "CROSSERS", "BEHOLD", "CHINNERS!",
-    "NECK ATTACK", "GO CHIN", "CHINASSS"
-  ];
+      <div class="iframeTopBar">
+        <div class="iframeTitle">
+          🍪 COOKIE CLICKER
+        </div>
 
-  var face = new Image();
-  face.src = "chin.png";
+        <button
+          class="closeButton"
+          id="closeCookie"
+          aria-label="Close Cookie Clicker"
+        >
+          ×
+        </button>
+      </div>
 
-  function resize() {
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    width = window.innerWidth;
-    height = window.innerHeight;
-    canvas.width = width * dpr;
-    canvas.height = height * dpr;
-    canvas.style.width = width + "px";
-    canvas.style.height = height + "px";
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  }
+      <iframe
+        id="cookieFrame"
+        src="about:blank"
+        title="Cookie Clicker"
+        allow="fullscreen"
+      ></iframe>
 
-  function spawnText() {
-    objects.push({
-      type: "text",
-      text: textPool[Math.floor(Math.random() * textPool.length)],
-      x: Math.random() * width,
-      y: Math.random() * height,
-      vx: (Math.random() - 0.5) * 2.5,
-      vy: (Math.random() - 0.5) * 2.5,
-      angle: Math.random() * Math.PI * 2,
-      va: (Math.random() - 0.5) * 0.04,
-      size: 18 + Math.random() * 28
-    });
-  }
+    </div>
+  </div>
 
-  function spawnImage() {
-    objects.push({
-      type: "image",
-      x: Math.random() * width,
-      y: Math.random() * height,
-      vx: (Math.random() - 0.5) * 2.5,
-      vy: (Math.random() - 0.5) * 2.5,
-      angle: Math.random() * Math.PI * 2,
-      va: (Math.random() - 0.5) * 0.04,
-      radius: 35 + Math.random() * 45
-    });
-  }
+  <script>
+    (function () {
+      "use strict";
 
-  function update() {
-    for (var i = 0; i < objects.length; i++) {
-      var o = objects[i];
-      o.x += o.vx;
-      o.y += o.vy;
-      o.angle += o.va;
-      var size = o.radius || o.size;
-      if (o.x < size) { o.x = size; o.vx *= -1; }
-      if (o.x > width - size) { o.x = width - size; o.vx *= -1; }
-      if (o.y < size) { o.y = size; o.vy *= -1; }
-      if (o.y > height - size) { o.y = height - size; o.vy *= -1; }
-    }
-  }
+      var reduceMotion =
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  function drawLasers() {
-    ctx.save();
-    ctx.lineWidth = 3;
-    ctx.globalAlpha = 0.25;
-    var lines = [
-      [-100, height * 0.15, width * 0.42, 0],
-      [width * 0.55, 0, width + 100, height * 0.22],
-      [-100, height * 0.82, width * 0.4, height],
-      [width * 0.6, height, width + 100, height * 0.72]
-    ];
-    for (var i = 0; i < lines.length; i++) {
-      var l = lines[i];
-      ctx.beginPath();
-      ctx.moveTo(l[0], l[1]);
-      ctx.lineTo(l[2], l[3]);
-      ctx.strokeStyle = "#ffffff";
-      ctx.stroke();
-    }
-    ctx.restore();
-  }
+      var canvas = document.getElementById("canvas");
+      var ctx = canvas.getContext("2d");
 
-  function draw() {
-    ctx.clearRect(0, 0, width, height);
-    drawLasers();
-    for (var i = 0; i < objects.length; i++) {
-      var o = objects[i];
-      ctx.save();
-      ctx.translate(o.x, o.y);
-      ctx.rotate(o.angle);
+      var shakeLayer = document.getElementById("shakeLayer");
+      var chaosButton = document.getElementById("chaosButton");
+      var cookieButton = document.getElementById("cookieButton");
 
-      if (o.type === "text") {
-        ctx.font = "1000 " + o.size + "px Arial";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillStyle = "#ffffff";
-        ctx.strokeStyle = "rgba(0,0,0,0.25)";
-        ctx.lineWidth = 4;
-        ctx.strokeText(o.text, 0, 0);
-        ctx.fillText(o.text, 0, 0);
+      var cookieModal = document.getElementById("cookieModal");
+      var cookieFrame = document.getElementById("cookieFrame");
+      var closeCookie = document.getElementById("closeCookie");
+
+      var chaosOverlay = document.getElementById("chaosOverlay");
+      var chaosText = document.querySelector(".chaosText");
+      var shockwave = document.querySelector(".shockwave");
+      var megaRing = document.querySelector(".megaRing");
+      var flash = document.getElementById("flash");
+
+      var width = 0;
+      var height = 0;
+      var dpr = 1;
+
+      var objects = [];
+      var particles = [];
+
+      var cameraShake = 0;
+      var chaosActive = false;
+
+      var textPool = [
+        "CHIN",
+        "CROSSERS",
+        "BEHOLD",
+        "CHINNERS!",
+        "NECK ATTACK",
+        "GO CHIN",
+        "CHINASSS",
+        "THE CHIN",
+        "ABSOLUTE CHIN",
+        "CHIN EVENT",
+        "CHIN DETECTED",
+        "NECK STATUS: CRITICAL",
+        "HOLY CHIN",
+        "CHIN.EXE",
+        "MORE CHIN",
+        "CHIN DIMENSION",
+        "CHIN OVERLOAD",
+        "CHINNERS FOREVER"
+      ];
+
+      var face = new Image();
+      face.src = "IMG_5759.png";
+
+      function resize() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+        width = window.innerWidth;
+        height = window.innerHeight;
+
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+
+        canvas.style.width = width + "px";
+        canvas.style.height = height + "px";
+
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       }
 
-      if (o.type === "image" && face.complete && face.naturalWidth) {
-        ctx.beginPath();
-        ctx.arc(0, 0, o.radius, 0, Math.PI * 2);
-        ctx.clip();
-        ctx.drawImage(face, -o.radius, -o.radius, o.radius * 2, o.radius * 2);
-        ctx.beginPath();
-        ctx.arc(0, 0, o.radius, 0, Math.PI * 2);
-        ctx.lineWidth = 6;
-        ctx.strokeStyle = "#ffffff";
-        ctx.stroke();
+      function random(min, max) {
+        return min + Math.random() * (max - min);
       }
 
-      ctx.restore();
-    }
-  }
+      function randomInt(min, max) {
+        return Math.floor(random(min, max + 1));
+      }
 
-  function loop() {
-    update();
-    draw();
-    requestAnimationFrame(loop);
-  }
+      function spawnText(big) {
+        objects.push({
+          type: "text",
 
-  window.addEventListener("resize", resize);
-  resize();
+          text:
+            textPool[
+              Math.floor(Math.random() * textPool.length)
+            ],
 
-  for (var t = 0; t < 10; t++) spawnText();
-  for (var im = 0; im < 5; im++) spawnImage();
+          x: Math.random() * width,
+          y: Math.random() * height,
 
-  if (reduceMotion) {
-    draw();
-  } else {
-    loop();
-  }
-})();
-</script>
+          vx: (Math.random() - 0.5) * 2.8,
+          vy: (Math.random() - 0.5) * 2.8,
+
+          angle: Math.random() * Math.PI * 2,
+          va: (Math.random() - 0.5) * 0.045,
+
+          size: big
+            ? random(28, 58)
+            : random(16, 42),
+
+          alpha: random(0.3, 0.8)
+        });
+      }
+
+      function spawnImage(big) {
+        objects.push({
+          type: "image",
+
+          x: Math.random() * width,
+          y: Math.random() * height,
+
+          vx: (Math.random() - 0.5) * 2.6,
+          vy: (Math.random() - 0.5) * 2.6,
+
+          angle: Math.random() * Math.PI * 2,
+          va: (Math.random() - 0.5) * 0.055,
+
+          radius: big
+            ? random(45, 85)
+            : random(28, 65),
+
+          alpha: random(0.4, 0.9)
+        });
+      }
+
+      function spawnParticle(
+        x,
+        y,
+        force,
+        imageParticle
+      ) {
+        var angle = Math.random() * Math.PI * 2;
+
+        var speed =
+          force *
+          (0.35 + Math.random() * 0.9);
+
+        particles.push({
+          x: x,
+          y: y,
+
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+
+          life: 1,
+          decay: random(0.012, 0.032),
+
+          size: imageParticle
+            ? random(22, 58)
+            : random(2, 11),
+
+          rotation: random(0, Math.PI * 2),
+          vr: random(-0.2, 0.2),
+
+          image: imageParticle,
+
+          trail: Math.random()
+        });
+      }
+
+      function updateObjects() {
+        for (var i = 0; i < objects.length; i++) {
+          var o = objects[i];
+
+          o.x += o.vx;
+          o.y += o.vy;
+
+          o.angle += o.va;
+
+          var size = o.radius || o.size;
+
+          if (o.x < size) {
+            o.x = size;
+            o.vx *= -1;
+          }
+
+          if (o.x > width - size) {
+            o.x = width - size;
+            o.vx *= -1;
+          }
+
+          if (o.y < size) {
+            o.y = size;
+            o.vy *= -1;
+          }
+
+          if (o.y > height - size) {
+            o.y = height - size;
+            o.vy *= -1;
+          }
+        }
+      }
+
+      function updateParticles() {
+        for (var i = particles.length - 1; i >= 0; i--) {
+          var p = particles[i];
+
+          p.x += p.vx;
+          p.y += p.vy;
+
+          p.vx *= 0.992;
+          p.vy *= 0.992;
+
+          p.vy += 0.035;
+
+          p.rotation += p.vr;
+
+          p.life -= p.decay;
+
+          if (p.life <= 0) {
+            particles.splice(i, 1);
+          }
+        }
+      }
+
+      function drawLasers() {
+        ctx.save();
+
+        ctx.lineWidth = 3;
+        ctx.globalAlpha = chaosActive ? 0.55 : 0.25;
+
+        var lines = [
+          [-100, height * 0.15, width * 0.42, 0],
+          [width * 0.55, 0, width + 100, height * 0.22],
+          [-100, height * 0.82, width * 0.4, height],
+          [width * 0.6, height, width + 100, height * 0.72]
+        ];
+
+        for (var i = 0; i < lines.length; i++) {
+          var l = lines[i];
+
+          ctx.beginPath();
+
+          ctx.moveTo(l[0], l[1]);
+          ctx.lineTo(l[2], l[3]);
+
+          ctx.strokeStyle =
+            i % 2 === 0
+              ? "#ffffff"
+              : "#00fff0";
+
+          ctx.stroke();
+        }
+
+        ctx.restore();
+      }
+
+      function drawParticles() {
+        for (var i = 0; i < particles.length; i++) {
+          var p = particles[i];
+
+          ctx.save();
+
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rotation);
+
+          ctx.globalAlpha = Math.max(0, p.life);
+
+          if (p.image && face.complete && face.naturalWidth) {
+            ctx.beginPath();
+
+            ctx.arc(
+              0,
+              0,
+              p.size / 2,
+              0,
+              Math.PI * 2
+            );
+
+            ctx.clip();
+
+            ctx.drawImage(
+              face,
+              -p.size / 2,
+              -p.size / 2,
+              p.size,
+              p.size
+            );
+
+            ctx.beginPath();
+
+            ctx.arc(
+              0,
+              0,
+              p.size / 2,
+              0,
+              Math.PI * 2
+            );
+
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = "#ffffff";
+            ctx.stroke();
+          } else {
+            ctx.fillStyle =
+              Math.random() > 0.5
+                ? "#ffffff"
+                : "#00fff0";
+
+            ctx.fillRect(
+              -p.size / 2,
+              -p.size / 2,
+              p.size,
+              p.size
+            );
+          }
+
+          ctx.restore();
+        }
+      }
+
+      function drawObjects() {
+        for (var i = 0; i < objects.length; i++) {
+          var o = objects[i];
+
+          ctx.save();
+
+          ctx.translate(o.x, o.y);
+          ctx.rotate(o.angle);
+
+          ctx.globalAlpha = o.alpha;
+
+          if (o.type === "text") {
+            ctx.font =
+              "1000 " +
+              o.size +
+              "px Arial";
+
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+
+            ctx.fillStyle = "#ffffff";
+
+            ctx.strokeStyle =
+              chaosActive
+                ? "rgba(0,255,240,0.5)"
+                : "rgba(0,0,0,0.25)";
+
+            ctx.lineWidth =
+              chaosActive ? 5 : 4;
+
+            ctx.strokeText(
+              o.text,
+              0,
+              0
+            );
+
+            ctx.fillText(
+              o.text,
+              0,
+              0
+            );
+          }
+
+          if (
+            o.type === "image" &&
+            face.complete &&
+            face.naturalWidth
+          ) {
+            ctx.beginPath();
+
+            ctx.arc(
+              0,
+              0,
+              o.radius,
+              0,
+              Math.PI * 2
+            );
+
+            ctx.clip();
+
+            ctx.drawImage(
+              face,
+              -o.radius,
+              -o.radius,
+              o.radius * 2,
+              o.radius * 2
+            );
+
+            ctx.beginPath();
+
+            ctx.arc(
+              0,
+              0,
+              o.radius,
+              0,
+              Math.PI * 2
+            );
+
+            ctx.lineWidth = 6;
+
+            ctx.strokeStyle =
+              chaosActive
+                ? "#00fff0"
+                : "#ffffff";
+
+            ctx.stroke();
+          }
+
+          ctx.restore();
+        }
+      }
+
+      function draw() {
+        ctx.clearRect(
+          0,
+          0,
+          width,
+          height
+        );
+
+        drawLasers();
+        drawParticles();
+        drawObjects();
+      }
+
+      function animate() {
+        updateObjects();
+        updateParticles();
+
+        if (cameraShake > 0) {
+          cameraShake *= 0.9;
+
+          if (cameraShake < 0.1) {
+            cameraShake = 0;
+          }
+        }
+
+        var shakeX = 0;
+        var shakeY = 0;
+        var shakeRotate = 0;
+
+        if (cameraShake > 0) {
+          shakeX =
+            (Math.random() - 0.5) *
+            cameraShake;
+
+          shakeY =
+            (Math.random() - 0.5) *
+            cameraShake;
+
+          shakeRotate =
+            (Math.random() - 0.5) *
+            cameraShake *
+            0.03;
+        }
+
+        shakeLayer.style.transform =
+          "translate(" +
+          shakeX +
+          "px," +
+          shakeY +
+          "px) rotate(" +
+          shakeRotate +
+          "deg)";
+
+        draw();
+
+        requestAnimationFrame(animate);
+      }
+
+      function triggerFlash() {
+        flash.classList.remove("active");
+
+        void flash.offsetWidth;
+
+        flash.classList.add("active");
+      }
+
+      function spawnDOMExplosionImages(
+        amount,
+        centerX,
+        centerY
+      ) {
+        for (var i = 0; i < amount; i++) {
+          var img = document.createElement("img");
+
+          img.src = "IMG_5759.png";
+          img.className = "explodeImage";
+
+          var angle =
+            Math.random() *
+            Math.PI *
+            2;
+
+          var distance =
+            random(50, 120);
+
+          var startX =
+            centerX -
+            45 +
+            Math.cos(angle) *
+            25;
+
+          var startY =
+            centerY -
+            45 +
+            Math.sin(angle) *
+            25;
+
+          img.style.left =
+            startX + "px";
+
+          img.style.top =
+            startY + "px";
+
+          img.style.width =
+            random(45, 115) + "px";
+
+          img.style.height =
+            img.style.width;
+
+          document.body.appendChild(img);
+
+          var duration =
+            random(550, 1200);
+
+          var endDistance =
+            distance *
+            random(5, 14);
+
+          var endX =
+            Math.cos(angle) *
+            endDistance;
+
+          var endY =
+            Math.sin(angle) *
+            endDistance;
+
+          var rotation =
+            random(-1080, 1080);
+
+          var scale =
+            random(0.25, 1.5);
+
+          img.animate(
+            [
+              {
+                transform:
+                  "translate(0,0) scale(0.25) rotate(0deg)",
+                opacity: 0
+              },
+
+              {
+                transform:
+                  "translate(" +
+                  random(-20, 20) +
+                  "px," +
+                  random(-20, 20) +
+                  "px) scale(" +
+                  scale +
+                  ") rotate(" +
+                  random(-90, 90) +
+                  "deg)",
+                opacity: 1,
+                offset: 0.18
+              },
+
+              {
+                transform:
+                  "translate(" +
+                  endX +
+                  "px," +
+                  endY +
+                  "px) scale(0.45) rotate(" +
+                  rotation +
+                  "deg)",
+                opacity: 0
+              }
+            ],
+            {
+              duration: duration,
+              easing: "cubic-bezier(.12,.75,.2,1)"
+            }
+          ).finished.then(function () {
+            if (img.parentNode) {
+              img.parentNode.removeChild(img);
+            }
+          });
+        }
+      }
+
+      function spawnDebris(
+        amount,
+        centerX,
+        centerY
+      ) {
+        for (var i = 0; i < amount; i++) {
+          var d = document.createElement("div");
+
+          d.className = "debris";
+
+          d.style.left =
+            centerX + "px";
+
+          d.style.top =
+            centerY + "px";
+
+          document.body.appendChild(d);
+
+          var angle =
+            Math.random() *
+            Math.PI *
+            2;
+
+          var distance =
+            random(150, 1000);
+
+          var rotation =
+            random(-1400, 1400);
+
+          var duration =
+            random(600, 1500);
+
+          var scale =
+            random(0.2, 2.5);
+
+          d.animate(
+            [
+              {
+                transform:
+                  "translate(-50%,-50%) scale(0) rotate(0deg)",
+                opacity: 1
+              },
+
+              {
+                transform:
+                  "translate(-50%,-50%) translate(" +
+                  Math.cos(angle) * distance +
+                  "px," +
+                  Math.sin(angle) * distance +
+                  "px) scale(" +
+                  scale +
+                  ") rotate(" +
+                  rotation +
+                  "deg)",
+                opacity: 0
+              }
+            ],
+            {
+              duration: duration,
+              easing: "cubic-bezier(.12,.8,.22,1)"
+            }
+          ).finished.then(function () {
+            if (d.parentNode) {
+              d.parentNode.removeChild(d);
+            }
+          });
+        }
+      }
+
+      function particleExplosion(
+        amount,
+        force,
+        imageParticles
+      ) {
+        var centerX = width / 2;
+        var centerY = height / 2;
+
+        for (var i = 0; i < amount; i++) {
+          spawnParticle(
+            centerX,
+            centerY,
+            force,
+            imageParticles &&
+              i % 2 === 0
+          );
+        }
+      }
+
+      function massiveChaos() {
+        chaosActive = true;
+
+        cameraShake = 80;
+
+        chaosOverlay.classList.add("active");
+
+        chaosText.classList.remove("active");
+        shockwave.classList.remove("active");
+        megaRing.classList.remove("active");
+
+        void chaosText.offsetWidth;
+        void shockwave.offsetWidth;
+        void megaRing.offsetWidth;
+
+        chaosText.classList.add("active");
+        shockwave.classList.add("active");
+        megaRing.classList.add("active");
+
+        triggerFlash();
+
+        var centerX = width / 2;
+        var centerY = height / 2;
+
+        particleExplosion(
+          260,
+          11,
+          true
+        );
+
+        spawnDOMExplosionImages(
+          90,
+          centerX,
+          centerY
+        );
+
+        spawnDebris(
+          180,
+          centerX,
+          centerY
+        );
+
+        for (var i = 0; i < 45; i++) {
+          spawnText(
+            true
+          );
+        }
+
+        for (var j = 0; j < 25; j++) {
+          spawnImage(
+            true
+          );
+        }
+
+        /*
+          Multiple delayed blast pulses.
+          This is what makes it feel more like an actual
+          ridiculous chain reaction rather than one animation.
+        */
+
+        setTimeout(function () {
+          cameraShake = 65;
+          triggerFlash();
+
+          particleExplosion(
+            120,
+            8,
+            true
+          );
+
+          spawnDOMExplosionImages(
+            35,
+            centerX,
+            centerY
+          );
+        }, 180);
+
+        setTimeout(function () {
+          cameraShake = 52;
+
+          particleExplosion(
+            100,
+            7,
+            true
+          );
+
+          spawnDebris(
+            70,
+            centerX,
+            centerY
+          );
+        }, 360);
+
+        setTimeout(function () {
+          cameraShake = 38;
+
+          particleExplosion(
+            80,
+            5,
+            true
+          );
+
+          spawnDOMExplosionImages(
+            20,
+            centerX,
+            centerY
+          );
+        }, 580);
+
+        setTimeout(function () {
+          chaosActive = false;
+          chaosOverlay.classList.remove("active");
+        }, 1100);
+      }
+
+      function openCookieClicker() {
+        if (!cookieFrame.src.includes(
+          "cookieclicker-8uu.pages.dev"
+        )) {
+          cookieFrame.src =
+            "https://cookieclicker-8uu.pages.dev/";
+        }
+
+        cookieModal.classList.add("open");
+
+        document.body.style.overflow =
+          "hidden";
+      }
+
+      function closeCookieClicker() {
+        cookieModal.classList.remove("open");
+
+        document.body.style.overflow =
+          "hidden";
+      }
+
+      chaosButton.addEventListener(
+        "click",
+        function (event) {
+          event.preventDefault();
+
+          massiveChaos();
+        }
+      );
+
+      cookieButton.addEventListener(
+        "click",
+        function (event) {
+          event.preventDefault();
+
+          openCookieClicker();
+        }
+      );
+
+      closeCookie.addEventListener(
+        "click",
+        function () {
+          closeCookieClicker();
+        }
+      );
+
+      cookieModal.addEventListener(
+        "click",
+        function (event) {
+          if (event.target === cookieModal) {
+            closeCookieClicker();
+          }
+        }
+      );
+
+      document.addEventListener(
+        "keydown",
+        function (event) {
+          if (
+            event.key === "Escape" &&
+            cookieModal.classList.contains("open")
+          ) {
+            closeCookieClicker();
+          }
+        }
+      );
+
+      window.addEventListener(
+        "resize",
+        resize
+      );
+
+      resize();
+
+      for (var t = 0; t < 14; t++) {
+        spawnText(false);
+      }
+
+      for (var im = 0; im < 7; im++) {
+        spawnImage(false);
+      }
+
+      /*
+        Initial floating chin particles appear once the image
+        is loaded. This prevents blank image circles before
+        IMG_5759.png has loaded.
+      */
+      face.onload = function () {
+        for (var i = 0; i < 3; i++) {
+          spawnImage(true);
+        }
+      };
+
+      animate();
+
+    })();
+  </script>
 
 </body>
 </html>
+```
