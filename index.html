@@ -569,131 +569,6 @@
       z-index: 55;
     }
 
-    /* =========================================================
-       COOKIE CLICKER WINDOW
-    ========================================================= */
-
-    #cookieModal {
-      position: fixed;
-      inset: 0;
-      z-index: 100;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      padding: 18px;
-
-      background: rgba(0,0,0,0.58);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-
-      opacity: 0;
-      visibility: hidden;
-
-      transition:
-        opacity 0.25s ease,
-        visibility 0.25s ease;
-    }
-
-    #cookieModal.open {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .iframeWindow {
-      width: min(1400px, 96vw);
-      height: min(900px, 94vh);
-
-      background: rgba(15,20,24,0.88);
-
-      border: 1px solid rgba(255,255,255,0.28);
-      border-radius: 26px;
-
-      overflow: hidden;
-
-      box-shadow:
-        0 35px 120px rgba(0,0,0,0.55),
-        0 0 60px rgba(0,255,240,0.08);
-
-      transform: scale(0.92) translateY(20px);
-      transition: transform 0.3s cubic-bezier(.2,.8,.2,1);
-
-      display: flex;
-      flex-direction: column;
-    }
-
-    #cookieModal.open .iframeWindow {
-      transform: scale(1) translateY(0);
-    }
-
-    .iframeTopBar {
-      flex: 0 0 auto;
-
-      height: 58px;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      padding: 0 15px 0 18px;
-
-      background:
-        linear-gradient(
-          180deg,
-          rgba(255,255,255,0.12),
-          rgba(255,255,255,0.06)
-        );
-
-      border-bottom: 1px solid rgba(255,255,255,0.15);
-    }
-
-    .iframeTitle {
-      color: white;
-      font-weight: 1000;
-      letter-spacing: 1px;
-      font-size: 14px;
-    }
-
-    .closeButton {
-      width: 38px;
-      height: 38px;
-
-      border-radius: 50%;
-
-      border: 1px solid rgba(255,255,255,0.25);
-
-      background: rgba(255,255,255,0.1);
-
-      color: white;
-
-      font-size: 20px;
-      font-weight: 900;
-
-      cursor: pointer;
-
-      transition:
-        transform 0.15s ease,
-        background 0.15s ease;
-    }
-
-    .closeButton:hover {
-      transform: rotate(90deg) scale(1.08);
-      background: rgba(255,70,100,0.35);
-    }
-
-    #cookieFrame {
-      width: 100%;
-      height: 100%;
-      border: 0;
-      background: #111;
-      flex: 1 1 auto;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
     @media (max-width: 700px) {
       .panel {
         padding: 30px 22px;
@@ -708,16 +583,6 @@
       .button {
         min-height: 60px;
         font-size: 18px;
-      }
-
-      .iframeWindow {
-        width: 100%;
-        height: 100%;
-        border-radius: 18px;
-      }
-
-      .iframeTopBar {
-        height: 52px;
       }
     }
 
@@ -758,8 +623,9 @@
 
             <a
               class="button cookie"
-              href="#"
-              id="cookieButton"
+              href="https://cookieclicker-8uu.pages.dev/"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               COOKIE CLICKER
             </a>
@@ -783,33 +649,6 @@
     <div class="megaRing"></div>
   </div>
 
-  <div id="cookieModal">
-    <div class="iframeWindow">
-
-      <div class="iframeTopBar">
-        <div class="iframeTitle">
-          🍪 COOKIE CLICKER
-        </div>
-
-        <button
-          class="closeButton"
-          id="closeCookie"
-          aria-label="Close Cookie Clicker"
-        >
-          ×
-        </button>
-      </div>
-
-      <iframe
-        id="cookieFrame"
-        src="about:blank"
-        title="Cookie Clicker"
-        allow="fullscreen"
-      ></iframe>
-
-    </div>
-  </div>
-
   <script>
     (function () {
       "use strict";
@@ -822,11 +661,6 @@
 
       var shakeLayer = document.getElementById("shakeLayer");
       var chaosButton = document.getElementById("chaosButton");
-      var cookieButton = document.getElementById("cookieButton");
-
-      var cookieModal = document.getElementById("cookieModal");
-      var cookieFrame = document.getElementById("cookieFrame");
-      var closeCookie = document.getElementById("closeCookie");
 
       var chaosOverlay = document.getElementById("chaosOverlay");
       var chaosText = document.querySelector(".chaosText");
@@ -887,32 +721,17 @@
         return min + Math.random() * (max - min);
       }
 
-      function randomInt(min, max) {
-        return Math.floor(random(min, max + 1));
-      }
-
       function spawnText(big) {
         objects.push({
           type: "text",
-
-          text:
-            textPool[
-              Math.floor(Math.random() * textPool.length)
-            ],
-
+          text: textPool[Math.floor(Math.random() * textPool.length)],
           x: Math.random() * width,
           y: Math.random() * height,
-
           vx: (Math.random() - 0.5) * 2.8,
           vy: (Math.random() - 0.5) * 2.8,
-
           angle: Math.random() * Math.PI * 2,
           va: (Math.random() - 0.5) * 0.045,
-
-          size: big
-            ? random(28, 58)
-            : random(16, 42),
-
+          size: big ? random(28, 58) : random(16, 42),
           alpha: random(0.3, 0.8)
         });
       }
@@ -920,56 +739,32 @@
       function spawnImage(big) {
         objects.push({
           type: "image",
-
           x: Math.random() * width,
           y: Math.random() * height,
-
           vx: (Math.random() - 0.5) * 2.6,
           vy: (Math.random() - 0.5) * 2.6,
-
           angle: Math.random() * Math.PI * 2,
           va: (Math.random() - 0.5) * 0.055,
-
-          radius: big
-            ? random(45, 85)
-            : random(28, 65),
-
+          radius: big ? random(45, 85) : random(28, 65),
           alpha: random(0.4, 0.9)
         });
       }
 
-      function spawnParticle(
-        x,
-        y,
-        force,
-        imageParticle
-      ) {
+      function spawnParticle(x, y, force, imageParticle) {
         var angle = Math.random() * Math.PI * 2;
-
-        var speed =
-          force *
-          (0.35 + Math.random() * 0.9);
+        var speed = force * (0.35 + Math.random() * 0.9);
 
         particles.push({
           x: x,
           y: y,
-
           vx: Math.cos(angle) * speed,
           vy: Math.sin(angle) * speed,
-
           life: 1,
           decay: random(0.012, 0.032),
-
-          size: imageParticle
-            ? random(22, 58)
-            : random(2, 11),
-
+          size: imageParticle ? random(22, 58) : random(2, 11),
           rotation: random(0, Math.PI * 2),
           vr: random(-0.2, 0.2),
-
-          image: imageParticle,
-
-          trail: Math.random()
+          image: imageParticle
         });
       }
 
@@ -979,7 +774,6 @@
 
           o.x += o.vx;
           o.y += o.vy;
-
           o.angle += o.va;
 
           var size = o.radius || o.size;
@@ -1015,11 +809,9 @@
 
           p.vx *= 0.992;
           p.vy *= 0.992;
-
           p.vy += 0.035;
 
           p.rotation += p.vr;
-
           p.life -= p.decay;
 
           if (p.life <= 0) {
@@ -1045,7 +837,6 @@
           var l = lines[i];
 
           ctx.beginPath();
-
           ctx.moveTo(l[0], l[1]);
           ctx.lineTo(l[2], l[3]);
 
@@ -1068,10 +859,13 @@
 
           ctx.translate(p.x, p.y);
           ctx.rotate(p.rotation);
-
           ctx.globalAlpha = Math.max(0, p.life);
 
-          if (p.image && face.complete && face.naturalWidth) {
+          if (
+            p.image &&
+            face.complete &&
+            face.naturalWidth
+          ) {
             ctx.beginPath();
 
             ctx.arc(
@@ -1105,6 +899,7 @@
             ctx.lineWidth = 3;
             ctx.strokeStyle = "#ffffff";
             ctx.stroke();
+
           } else {
             ctx.fillStyle =
               Math.random() > 0.5
@@ -1153,17 +948,8 @@
             ctx.lineWidth =
               chaosActive ? 5 : 4;
 
-            ctx.strokeText(
-              o.text,
-              0,
-              0
-            );
-
-            ctx.fillText(
-              o.text,
-              0,
-              0
-            );
+            ctx.strokeText(o.text, 0, 0);
+            ctx.fillText(o.text, 0, 0);
           }
 
           if (
@@ -1228,51 +1014,6 @@
         drawObjects();
       }
 
-      function animate() {
-        updateObjects();
-        updateParticles();
-
-        if (cameraShake > 0) {
-          cameraShake *= 0.9;
-
-          if (cameraShake < 0.1) {
-            cameraShake = 0;
-          }
-        }
-
-        var shakeX = 0;
-        var shakeY = 0;
-        var shakeRotate = 0;
-
-        if (cameraShake > 0) {
-          shakeX =
-            (Math.random() - 0.5) *
-            cameraShake;
-
-          shakeY =
-            (Math.random() - 0.5) *
-            cameraShake;
-
-          shakeRotate =
-            (Math.random() - 0.5) *
-            cameraShake *
-            0.03;
-        }
-
-        shakeLayer.style.transform =
-          "translate(" +
-          shakeX +
-          "px," +
-          shakeY +
-          "px) rotate(" +
-          shakeRotate +
-          "deg)";
-
-        draw();
-
-        requestAnimationFrame(animate);
-      }
-
       function triggerFlash() {
         flash.classList.remove("active");
 
@@ -1297,20 +1038,15 @@
             Math.PI *
             2;
 
-          var distance =
-            random(50, 120);
-
           var startX =
             centerX -
             45 +
-            Math.cos(angle) *
-            25;
+            Math.cos(angle) * 25;
 
           var startY =
             centerY -
             45 +
-            Math.sin(angle) *
-            25;
+            Math.sin(angle) * 25;
 
           img.style.left =
             startX + "px";
@@ -1330,8 +1066,7 @@
             random(550, 1200);
 
           var endDistance =
-            distance *
-            random(5, 14);
+            random(250, 1500);
 
           var endX =
             Math.cos(angle) *
@@ -1347,50 +1082,56 @@
           var scale =
             random(0.25, 1.5);
 
-          img.animate(
-            [
-              {
-                transform:
-                  "translate(0,0) scale(0.25) rotate(0deg)",
-                opacity: 0
-              },
+          var animation =
+            img.animate(
+              [
+                {
+                  transform:
+                    "translate(0,0) scale(0.25) rotate(0deg)",
+                  opacity: 0
+                },
 
-              {
-                transform:
-                  "translate(" +
-                  random(-20, 20) +
-                  "px," +
-                  random(-20, 20) +
-                  "px) scale(" +
-                  scale +
-                  ") rotate(" +
-                  random(-90, 90) +
-                  "deg)",
-                opacity: 1,
-                offset: 0.18
-              },
+                {
+                  transform:
+                    "translate(" +
+                    random(-20, 20) +
+                    "px," +
+                    random(-20, 20) +
+                    "px) scale(" +
+                    scale +
+                    ") rotate(" +
+                    random(-90, 90) +
+                    "deg)",
+                  opacity: 1,
+                  offset: 0.18
+                },
 
+                {
+                  transform:
+                    "translate(" +
+                    endX +
+                    "px," +
+                    endY +
+                    "px) scale(0.45) rotate(" +
+                    rotation +
+                    "deg)",
+                  opacity: 0
+                }
+              ],
               {
-                transform:
-                  "translate(" +
-                  endX +
-                  "px," +
-                  endY +
-                  "px) scale(0.45) rotate(" +
-                  rotation +
-                  "deg)",
-                opacity: 0
+                duration: duration,
+                easing:
+                  "cubic-bezier(.12,.75,.2,1)"
               }
-            ],
-            {
-              duration: duration,
-              easing: "cubic-bezier(.12,.75,.2,1)"
-            }
-          ).finished.then(function () {
-            if (img.parentNode) {
-              img.parentNode.removeChild(img);
-            }
-          });
+            );
+
+          animation.finished
+            .then(function () {
+              if (img.parentNode) {
+                img.parentNode.removeChild(img);
+              }
+            })
+            .catch(function () {});
         }
       }
 
@@ -1400,7 +1141,8 @@
         centerY
       ) {
         for (var i = 0; i < amount; i++) {
-          var d = document.createElement("div");
+          var d =
+            document.createElement("div");
 
           d.className = "debris";
 
@@ -1429,37 +1171,43 @@
           var scale =
             random(0.2, 2.5);
 
-          d.animate(
-            [
-              {
-                transform:
-                  "translate(-50%,-50%) scale(0) rotate(0deg)",
-                opacity: 1
-              },
+          var animation =
+            d.animate(
+              [
+                {
+                  transform:
+                    "translate(-50%,-50%) scale(0) rotate(0deg)",
+                  opacity: 1
+                },
 
+                {
+                  transform:
+                    "translate(-50%,-50%) translate(" +
+                    Math.cos(angle) * distance +
+                    "px," +
+                    Math.sin(angle) * distance +
+                    "px) scale(" +
+                    scale +
+                    ") rotate(" +
+                    rotation +
+                    "deg)",
+                  opacity: 0
+                }
+              ],
               {
-                transform:
-                  "translate(-50%,-50%) translate(" +
-                  Math.cos(angle) * distance +
-                  "px," +
-                  Math.sin(angle) * distance +
-                  "px) scale(" +
-                  scale +
-                  ") rotate(" +
-                  rotation +
-                  "deg)",
-                opacity: 0
+                duration: duration,
+                easing:
+                  "cubic-bezier(.12,.8,.22,1)"
               }
-            ],
-            {
-              duration: duration,
-              easing: "cubic-bezier(.12,.8,.22,1)"
-            }
-          ).finished.then(function () {
-            if (d.parentNode) {
-              d.parentNode.removeChild(d);
-            }
-          });
+            );
+
+          animation.finished
+            .then(function () {
+              if (d.parentNode) {
+                d.parentNode.removeChild(d);
+              }
+            })
+            .catch(function () {});
         }
       }
 
@@ -1525,22 +1273,12 @@
         );
 
         for (var i = 0; i < 45; i++) {
-          spawnText(
-            true
-          );
+          spawnText(true);
         }
 
         for (var j = 0; j < 25; j++) {
-          spawnImage(
-            true
-          );
+          spawnImage(true);
         }
-
-        /*
-          Multiple delayed blast pulses.
-          This is what makes it feel more like an actual
-          ridiculous chain reaction rather than one animation.
-        */
 
         setTimeout(function () {
           cameraShake = 65;
@@ -1597,70 +1335,11 @@
         }, 1100);
       }
 
-      function openCookieClicker() {
-        if (!cookieFrame.src.includes(
-          "cookieclicker-8uu.pages.dev"
-        )) {
-          cookieFrame.src =
-            "https://cookieclicker-8uu.pages.dev/";
-        }
-
-        cookieModal.classList.add("open");
-
-        document.body.style.overflow =
-          "hidden";
-      }
-
-      function closeCookieClicker() {
-        cookieModal.classList.remove("open");
-
-        document.body.style.overflow =
-          "hidden";
-      }
-
       chaosButton.addEventListener(
         "click",
         function (event) {
           event.preventDefault();
-
           massiveChaos();
-        }
-      );
-
-      cookieButton.addEventListener(
-        "click",
-        function (event) {
-          event.preventDefault();
-
-          openCookieClicker();
-        }
-      );
-
-      closeCookie.addEventListener(
-        "click",
-        function () {
-          closeCookieClicker();
-        }
-      );
-
-      cookieModal.addEventListener(
-        "click",
-        function (event) {
-          if (event.target === cookieModal) {
-            closeCookieClicker();
-          }
-        }
-      );
-
-      document.addEventListener(
-        "keydown",
-        function (event) {
-          if (
-            event.key === "Escape" &&
-            cookieModal.classList.contains("open")
-          ) {
-            closeCookieClicker();
-          }
         }
       );
 
@@ -1679,19 +1358,58 @@
         spawnImage(false);
       }
 
-      /*
-        Initial floating chin particles appear once the image
-        is loaded. This prevents blank image circles before
-        IMG_5759.png has loaded.
-      */
       face.onload = function () {
         for (var i = 0; i < 3; i++) {
           spawnImage(true);
         }
       };
 
-      animate();
+      function animate() {
+        updateObjects();
+        updateParticles();
 
+        if (cameraShake > 0) {
+          cameraShake *= 0.9;
+
+          if (cameraShake < 0.1) {
+            cameraShake = 0;
+          }
+        }
+
+        var shakeX = 0;
+        var shakeY = 0;
+        var shakeRotate = 0;
+
+        if (cameraShake > 0) {
+          shakeX =
+            (Math.random() - 0.5) *
+            cameraShake;
+
+          shakeY =
+            (Math.random() - 0.5) *
+            cameraShake;
+
+          shakeRotate =
+            (Math.random() - 0.5) *
+            cameraShake *
+            0.03;
+        }
+
+        shakeLayer.style.transform =
+          "translate(" +
+          shakeX +
+          "px," +
+          shakeY +
+          "px) rotate(" +
+          shakeRotate +
+          "deg)";
+
+        draw();
+
+        requestAnimationFrame(animate);
+      }
+
+      animate();
     })();
   </script>
 
