@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CHINNERS</title>
+<meta name="description" content="The official unofficial Finley Crosby experience.">
+<meta name="theme-color" content="#00bfae">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍪</text></svg>">
+<style>
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  body {
+    background: linear-gradient(135deg, #00bfae, #00e5ff, #006eff, #00ff66, #00d9c8);
+    background-size: 500% 500%;
+    animation: gradient 12s ease infinite;
+  }
+
+  @keyframes gradient {
+    0%   { background-position: 0% 50%; }
+    25%  { background-position: 100% 25%; }
+    50%  { background-position: 100% 100%; }
+    75%  { background-position: 0% 75%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  #canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .menu {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    padding: 20px;
+  }
+
+  .panel {
+    pointer-events: auto;
+    width: min(520px, calc(100vw - 40px));
+    padding: 42px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 30px;
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  }
+
+  h1 {
+    margin: 0;
+    color: white;
+    font-size: clamp(48px, 10vw, 92px);
+    font-weight: 1000;
+    letter-spacing: -5px;
+    text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.18), 0 10px 30px rgba(0, 0, 0, 0.2);
+  }
+
+  .subtitle {
+    margin: 8px 0 32px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .button {
+    display: block;
+    padding: 18px 24px;
+    border-radius: 16px;
+    color: white;
+    text-decoration: none;
+    font-size: 21px;
+    font-weight: 1000;
+    letter-spacing: 1px;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .button:hover {
+    transform: scale(1.04) rotate(-1deg);
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  }
+
+  .button:active { transform: scale(0.97); }
+
+  .cookie::before { content: "🍪 "; }
+
+  .footer {
+    margin-top: 25px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    body { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="canvas" aria-hidden="true"></canvas>
+
+<div class="menu">
+  <main class="panel">
+    <h1>CHINNERS</h1>
+    <div class="subtitle">The official unofficial Finley Crosby experience</div>
+    <div class="buttons">
+      <a class="button" href="/">CHINNERS CHAOS</a>
+      <a class="button cookie" href="/cookie-clicker.html">COOKIE CLICKER</a>
+    </div>
+    <div class="footer">Beware the chin</div>
+  </main>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var canvas = document.getElementById("canvas");
+  var ctx = canvas.getContext("2d");
+
+  var width = 0, height = 0, dpr = 1;
+  var objects = [];
+
+  var textPool = [
+    "CHIN", "CROSSERS", "BEHOLD", "CHINNERS!",
+    "NECK ATTACK", "GO CHIN", "CHINASSS"
+  ];
+
+  var face = new Image();
+  face.src = "chin.png";
+
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    canvas.style.width = width + "px";
+    canvas.style.height = height + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function spawnText() {
+    objects.push({
+      type: "text",
+      text: textPool[Math.floor(Math.random() * textPool.length)],
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * 2.5,
+      vy: (Math.random() - 0.5) * 2.5,
+      angle: Math.random() * Math.PI * 2,
+      va: (Math.random() - 0.5) * 0.04,
+      size: 18 + Math.random() * 28
+    });
+  }
+
+  function spawnImage() {
+    objects.push({
+      type: "image",
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * 2.5,
+      vy: (Math.random() - 0.5) * 2.5,
+      angle: Math.random() * Math.PI * 2,
+      va: (Math.random() - 0.5) * 0.04,
+      radius: 35 + Math.random() * 45
+    });
+  }
+
+  function update() {
+    for (var i = 0; i < objects.length; i++) {
+      var o = objects[i];
+      o.x += o.vx;
+      o.y += o.vy;
+      o.angle += o.va;
+      var size = o.radius || o.size;
+      if (o.x < size) { o.x = size; o.vx *= -1; }
+      if (o.x > width - size) { o.x = width - size; o.vx *= -1; }
+      if (o.y < size) { o.y = size; o.vy *= -1; }
+      if (o.y > height - size) { o.y = height - size; o.vy *= -1; }
+    }
+  }
+
+  function drawLasers() {
+    ctx.save();
+    ctx.lineWidth = 3;
+    ctx.globalAlpha = 0.25;
+    var lines = [
+      [-100, height * 0.15, width * 0.42, 0],
+      [width * 0.55, 0, width + 100, height * 0.22],
+      [-100, height * 0.82, width * 0.4, height],
+      [width * 0.6, height, width + 100, height * 0.72]
+    ];
+    for (var i = 0; i < lines.length; i++) {
+      var l = lines[i];
+      ctx.beginPath();
+      ctx.moveTo(l[0], l[1]);
+      ctx.lineTo(l[2], l[3]);
+      ctx.strokeStyle = "#ffffff";
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, width, height);
+    drawLasers();
+    for (var i = 0; i < objects.length; i++) {
+      var o = objects[i];
+      ctx.save();
+      ctx.translate(o.x, o.y);
+      ctx.rotate(o.angle);
+
+      if (o.type === "text") {
+        ctx.font = "1000 " + o.size + "px Arial";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillStyle = "#ffffff";
+        ctx.strokeStyle = "rgba(0,0,0,0.25)";
+        ctx.lineWidth = 4;
+        ctx.strokeText(o.text, 0, 0);
+        ctx.fillText(o.text, 0, 0);
+      }
+
+      if (o.type === "image" && face.complete && face.naturalWidth) {
+        ctx.beginPath();
+        ctx.arc(0, 0, o.radius, 0, Math.PI * 2);
+        ctx.clip();
+        ctx.drawImage(face, -o.radius, -o.radius, o.radius * 2, o.radius * 2);
+        ctx.beginPath();
+        ctx.arc(0, 0, o.radius, 0, Math.PI * 2);
+        ctx.lineWidth = 6;
+        ctx.strokeStyle = "#ffffff";
+        ctx.stroke();
+      }
+
+      ctx.restore();
+    }
+  }
+
+  function loop() {
+    update();
+    draw();
+    requestAnimationFrame(loop);
+  }
+
+  window.addEventListener("resize", resize);
+  resize();
+
+  for (var t = 0; t < 10; t++) spawnText();
+  for (var im = 0; im < 5; im++) spawnImage();
+
+  if (reduceMotion) {
+    draw();
+  } else {
+    loop();
+  }
+})();
+</script>
+
+</body>
+</html>
